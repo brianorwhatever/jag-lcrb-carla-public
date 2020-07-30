@@ -655,6 +655,7 @@ namespace Gov.Lclb.Cllb.Public.Controllers
                 .ToList();
                 if (licences != null)
                 {
+                    bool hasTransferApplication = false;
                     foreach (var licence in licences)
                     {
                         IEnumerable<MicrosoftDynamicsCRMadoxioApplication> applicationsInProgress = _dynamicsClient.GetApplicationsForLicenceByApplicant(licence.AdoxioLicencee.Accountid);
