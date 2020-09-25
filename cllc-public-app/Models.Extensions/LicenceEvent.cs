@@ -189,17 +189,11 @@ namespace Gov.Lclb.Cllb.Public.Models
             to.Statuscode = (int?)from.Status;
             if (from.StartDate.HasValue)
             {
-                DateTimeOffset oldStart = (DateTimeOffset)from.StartDate;
-                to.AdoxioStartdate = oldStart;
-                /*DateTimeOffset startDate = new DateTimeOffset(oldStart.Year, oldStart.Month, oldStart.Day, 0, 0, 0, new TimeSpan(0, 0, 0));
-                to.AdoxioStartdate = startDate;*/
+                to.AdoxioStartdate = new DateTimeOffset(oldStart.Year, oldStart.Month, oldStart.Day, 0, 0, 0, new TimeSpan(0, 0, 0));
             }
             if (from.EndDate.HasValue)
             {
-                DateTimeOffset oldEnd = (DateTimeOffset)from.EndDate;
-                to.AdoxioEnddate = oldEnd;
-                /*DateTimeOffset endDate = new DateTimeOffset(oldEnd.Year, oldEnd.Month, oldEnd.Day, 0, 0, 0, TimeZone.CurrentTimeZone);
-                to.AdoxioEnddate = endDate;*/
+                to.AdoxioEnddate = new DateTimeOffset(oldEnd.Year, oldEnd.Month, oldEnd.Day, 0, 0, 0, new TimeSpan(8, 0, 0));
             }
             to.AdoxioVenuenamedescription = from.VenueDescription;
             to.AdoxioAdditionallocationinfo = from.AdditionalLocationInformation;
