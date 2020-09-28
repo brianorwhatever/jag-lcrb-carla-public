@@ -651,12 +651,14 @@ namespace Gov.Lclb.Cllb.Public.Controllers
             string id = EncryptionUtility.DecryptStringHex(code, _encryptionKey);
             if (!string.IsNullOrEmpty(id))
             {
-                MicrosoftDynamicsCRMcontact userContact = null;
+                Contact userContact = null;
                 try
                 {
                     string temp = _httpContextAccessor.HttpContext.Session.GetString("UserSettings");
                     UserSettings userSettings = JsonConvert.DeserializeObject<UserSettings>(temp);
-                    userContact = await _dynamicsClient.GetContactById(userSettings.ContactId);
+                    userContact = userSettings.NewContact;
+                    _logger.LogInformation("new contact");
+                    _logger.LogInformation(userContact.id);
                 }
                 catch (ArgumentNullException)
                 {
@@ -677,9 +679,10 @@ namespace Gov.Lclb.Cllb.Public.Controllers
                     });
                 }
 
+
                 if (contact != null
-                    && userContact.Firstname != null && contact.Firstname.StartsWith(userContact.Firstname.Substring(0, 1), true, CultureInfo.CurrentCulture)
-                    && userContact.Lastname != null && userContact.Lastname.ToLower() == contact.Lastname.ToLower()
+                    && userContact.firstname != null && contact.Firstname.StartsWith(userContact.firstname.Substring(0, 1), true, CultureInfo.CurrentCulture)
+                    && userContact.lastname != null && userContact.lastname.ToLower() == contact.Lastname.ToLower()
                     && userContact.Birthdate != null && userContact.Birthdate.Value.Date.ToShortDateString() == contact.Birthdate.Value.Date.ToShortDateString()
                 )
                 {
