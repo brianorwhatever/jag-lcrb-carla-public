@@ -660,8 +660,9 @@ namespace Gov.Lclb.Cllb.Public.Controllers
                     _logger.LogError(userSettings.GetJson());
                     //userContact = await _dynamicsClient.GetContactById(user.ContactId.ToString());
                 }
-                catch (ArgumentNullException)
+                catch (Exception e)
                 {
+                    _logger.LogError("Error getting contact details", e);
                     // anonymous
                 }
                 
@@ -691,13 +692,13 @@ namespace Gov.Lclb.Cllb.Public.Controllers
                         Id = contact.Contactid,
                         token = code,
                         shortName = contact.Firstname + " " + contact.Lastname,
-                        dateOfBirth = contact.AdoxioDateofbirthshortdatestring,
-                        gender = ((Gender?)contact.AdoxioGendercode).ToString(),
-                        streetAddress = contact.Address1Line1,
-                        city = contact.Address1City,
-                        province = contact.Address1Stateorprovince,
-                        postalCode = contact.Address1Postalcode,
-                        country = contact.Address1Country
+                        dateOfBirth = newContact.Birthdate.ToString(),
+                        gender = ((Gender?)newContact.Gender).ToString(),
+                        streetAddress = newContact.address1_line1,
+                        city = newContact.address1_city,
+                        province = newContact.address1_stateorprovince,
+                        postalCode = newContact.address1_postalcode,
+                        country = newContact.address1_country
                     });
                 }
                 else
