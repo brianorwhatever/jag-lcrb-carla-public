@@ -651,7 +651,6 @@ namespace Gov.Lclb.Cllb.Public.Controllers
             string id = EncryptionUtility.DecryptStringHex(code, _encryptionKey);
             if (!string.IsNullOrEmpty(id))
             {
-                Models.User user = null;
                 Contact newContact = null;
                 try
                 {
@@ -670,7 +669,7 @@ namespace Gov.Lclb.Cllb.Public.Controllers
                 // query the Dynamics system to get the contact record.
                 var contact = await _dynamicsClient.GetContactById(contactId);
 
-                if (user == null) {
+                if (newContact == null) {
                     return new JsonResult(new CASSPublicContact
                     {
                         Id = contact.Contactid,
