@@ -658,7 +658,8 @@ namespace Gov.Lclb.Cllb.Public.Controllers
                     string temp = _httpContextAccessor.HttpContext.Session.GetString("UserSettings");
                     UserSettings userSettings = JsonConvert.DeserializeObject<UserSettings>(temp);
                     user = userSettings.AuthenticatedUser;
-                    userContact = await _dynamicsClient.GetContactById(user.ContactId.ToString());
+                    _logger.LogError(userSettings.GetJson());
+                    //userContact = await _dynamicsClient.GetContactById(user.ContactId.ToString());
                 }
                 catch (ArgumentNullException)
                 {
