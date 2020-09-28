@@ -652,12 +652,12 @@ namespace Gov.Lclb.Cllb.Public.Controllers
             if (!string.IsNullOrEmpty(id))
             {
                 Models.User user = null;
-                MicrosoftDynamicsCRMcontact userContact = null;
+                Contact newContact = null;
                 try
                 {
                     string temp = _httpContextAccessor.HttpContext.Session.GetString("UserSettings");
                     UserSettings userSettings = JsonConvert.DeserializeObject<UserSettings>(temp);
-                    user = userSettings.AuthenticatedUser;
+                    newContact = userSettings.NewContact;
                     _logger.LogError(userSettings.GetJson());
                     //userContact = await _dynamicsClient.GetContactById(user.ContactId.ToString());
                 }
@@ -682,9 +682,9 @@ namespace Gov.Lclb.Cllb.Public.Controllers
 
 
                 if (contact != null
-                    && user.GivenName != null && contact.Firstname.StartsWith(user.GivenName.Substring(0, 1), true, CultureInfo.CurrentCulture)
-                    && user.Surname != null && user.Surname.ToLower() == contact.Lastname.ToLower()
-                    && userContact.Birthdate != null && userContact.Birthdate.Value.Date.ToShortDateString() == contact.Birthdate.Value.Date.ToShortDateString()
+                    && newContact.firstname != null && contact.Firstname.StartsWith(newContact.firstname.Substring(0, 1), true, CultureInfo.CurrentCulture)
+                    && newContact.lastname != null && newContact.lastname.ToLower() == contact.Lastname.ToLower()
+                    && newContact.Birthdate != null && newContact.Birthdate.Value.Date.ToShortDateString() == contact.Birthdate.Value.Date.ToShortDateString()
                 )
                 {
                     return new JsonResult(new CASSPrivateContact
