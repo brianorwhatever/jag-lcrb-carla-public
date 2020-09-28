@@ -651,14 +651,14 @@ namespace Gov.Lclb.Cllb.Public.Controllers
             string id = EncryptionUtility.DecryptStringHex(code, _encryptionKey);
             if (!string.IsNullOrEmpty(id))
             {
-                Contact userContact = null;
+                Models.User user = null;
+                MicrosoftDynamicsCRMcontact userContact = null;
                 try
                 {
                     string temp = _httpContextAccessor.HttpContext.Session.GetString("UserSettings");
                     UserSettings userSettings = JsonConvert.DeserializeObject<UserSettings>(temp);
-                    userContact = userSettings.NewContact;
-                    _logger.LogInformation("new contact");
-                    _logger.LogInformation(userContact.id);
+                    user = userSettings.AuthenticatedUser;
+                    userContact = await _dynamicsClient.GetContactById(user.ContactId.ToString());
                 }
                 catch (ArgumentNullException)
                 {
@@ -669,7 +669,7 @@ namespace Gov.Lclb.Cllb.Public.Controllers
                 // query the Dynamics system to get the contact record.
                 var contact = await _dynamicsClient.GetContactById(contactId);
 
-                if (userContact == null) {
+                if (user == null) {
                     return new JsonResult(new CASSPublicContact
                     {
                         Id = contact.Contactid,
@@ -681,8 +681,8 @@ namespace Gov.Lclb.Cllb.Public.Controllers
 
 
                 if (contact != null
-                    && userContact.firstname != null && contact.Firstname.StartsWith(userContact.firstname.Substring(0, 1), true, CultureInfo.CurrentCulture)
-                    && userContact.lastname != null && userContact.lastname.ToLower() == contact.Lastname.ToLower()
+                    && user.GivenName != null && contact.Firstname.StartsWith(user.GivenName.Substring(0, 1), true, CultureInfo.CurrentCulture)
+                    && user.Surname != null && user.Surname.ToLower() == contact.Lastname.ToLower()
                     && userContact.Birthdate != null && userContact.Birthdate.Value.Date.ToShortDateString() == contact.Birthdate.Value.Date.ToShortDateString()
                 )
                 {
