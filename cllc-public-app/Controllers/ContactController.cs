@@ -692,7 +692,7 @@ namespace Gov.Lclb.Cllb.Public.Controllers
                         Id = contact.Contactid,
                         token = code,
                         shortName = contact.Firstname + " " + contact.Lastname,
-                        dateOfBirth = newContact.Birthdate.ToString(),
+                        dateOfBirth = newContact.Birthdate.Value.Date.ToShortDateString(),
                         gender = ((Gender?)newContact.Gender).ToString(),
                         streetAddress = newContact.address1_line1,
                         city = newContact.address1_city,
