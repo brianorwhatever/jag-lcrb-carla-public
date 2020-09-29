@@ -58,7 +58,7 @@ namespace Gov.Lclb.Cllb.Public.Authentication
         {
             if (AccountId == null && ContactId == null)
             {
-                throw new Exception("UserSettings Validation Error:  AccountId is null and ContactID is null");
+                throw new Exception("UserSettings Validation Error:  AccountId is null and ContactId is null");
             }
 
             if (AccountId == null && UserType == "Business")

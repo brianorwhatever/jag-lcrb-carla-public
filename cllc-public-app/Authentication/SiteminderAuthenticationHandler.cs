@@ -753,7 +753,8 @@ namespace Gov.Lclb.Cllb.Public.Authentication
             }
 
             _logger.Debug("DEV MODE Setting identity and creating session for: " + userId);
-
+            _logger.Error("loading user:");
+            _logger.Error(context.Request.Headers);
             // create session info for the current user
             userSettings.AuthenticatedUser = await _dynamicsClient.LoadUser(userSettings.SiteMinderGuid, context.Request.Headers, _ms_logger);
             if (userSettings.AuthenticatedUser == null)
