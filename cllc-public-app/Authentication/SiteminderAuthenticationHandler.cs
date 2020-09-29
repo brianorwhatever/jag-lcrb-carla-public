@@ -373,6 +373,10 @@ namespace Gov.Lclb.Cllb.Public.Authentication
                 }
 
                 _logger.Debug("Loading user external id = " + siteMinderGuid);
+                _logger.Error("loading user:");
+                _logger.Error(Headers["smgov_givenname");
+                _logger.Error(Headers["smgov_surname");
+                _logger.Error(Headers["smgov_birthdate");
                 // 3/18/2020 - Note that LoadUser will now work if there is a match on the guid, as well as a match on name in a case where there is no guid.
                 userSettings.AuthenticatedUser = await _dynamicsClient.LoadUser(siteMinderGuid, context.Request.Headers, _ms_logger);
                 _logger.Information("After getting authenticated user = " + userSettings.GetJson());
@@ -753,8 +757,6 @@ namespace Gov.Lclb.Cllb.Public.Authentication
             }
 
             _logger.Debug("DEV MODE Setting identity and creating session for: " + userId);
-            _logger.Error("loading user:");
-            _logger.Error(context.Request.Headers);
             // create session info for the current user
             userSettings.AuthenticatedUser = await _dynamicsClient.LoadUser(userSettings.SiteMinderGuid, context.Request.Headers, _ms_logger);
             if (userSettings.AuthenticatedUser == null)
