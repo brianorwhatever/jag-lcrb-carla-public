@@ -293,6 +293,10 @@ namespace Gov.Lclb.Cllb.Public.Authentication
                     //do nothing
                     _logger.Debug("No UserSettings found");
                 }
+                _logger.Error("user:");
+                _logger.Error(context.Request.Headers["smgov_givenname"]);
+                _logger.Error(context.Request.Headers["smgov_surname"]);
+                _logger.Error(context.Request.Headers["smgov_birthdate"]);
 
                 // is user authenticated - if so we're done
                 if ((userSettings.UserAuthenticated && string.IsNullOrEmpty(userId)) ||
@@ -303,6 +307,7 @@ namespace Gov.Lclb.Cllb.Public.Authentication
                     principal = userSettings.AuthenticatedUser.ToClaimsPrincipal(_options.Scheme, userSettings.UserType);
                     return AuthenticateResult.Success(new AuthenticationTicket(principal, null, Options.Scheme));
                 }
+                _logger.Error("310");
 
                 // **************************************************
                 // Check if we have a Dev Environment Cookie
@@ -324,7 +329,7 @@ namespace Gov.Lclb.Cllb.Public.Authentication
                         _logger.Information("Couldn't successfully login as dev user - continuing as regular user");
                     }
                 }
-
+_logger.Error("332");
                 // **************************************************
                 // Authenticate based on SiteMinder Headers
                 // **************************************************
@@ -346,7 +351,7 @@ namespace Gov.Lclb.Cllb.Public.Authentication
                 {
                     userId = context.Request.Headers[_options.SiteMinderUniversalIdKey];
                 }
-
+                _logger.Error("354");
                 siteMinderGuid = context.Request.Headers[_options.SiteMinderUserGuidKey];
                 siteMinderBusinessGuid = context.Request.Headers[_options.SiteMinderBusinessGuidKey];
                 siteMinderUserType = context.Request.Headers[_options.SiteMinderUserTypeKey];
@@ -355,28 +360,27 @@ namespace Gov.Lclb.Cllb.Public.Authentication
                 // **************************************************
                 // Validate credentials
                 // **************************************************
+                _logger.Error("363");
                 if (string.IsNullOrEmpty(userId))
                 {
                     _logger.Debug(_options.MissingSiteMinderUserIdError);
                     return AuthenticateResult.Fail(_options.MissingSiteMinderGuidError);
                 }
-
+                _logger.Error("368");
                 if (string.IsNullOrEmpty(siteMinderGuid))
                 {
                     _logger.Debug(_options.MissingSiteMinderGuidError);
                     return AuthenticateResult.Fail(_options.MissingSiteMinderGuidError);
                 }
+                _logger.Error("374");
                 if (string.IsNullOrEmpty(siteMinderUserType))
                 {
                     _logger.Debug(_options.MissingSiteMinderUserTypeError);
                     return AuthenticateResult.Fail(_options.MissingSiteMinderUserTypeError);
                 }
 
-                _logger.Debug("Loading user external id = " + siteMinderGuid);
-                _logger.Error("loading user:");
-                _logger.Error(context.Request.Headers["smgov_givenname"]);
-                _logger.Error(context.Request.Headers["smgov_surname"]);
-                _logger.Error(context.Request.Headers["smgov_birthdate"]);
+                _logger.Error("Loading user external id = " + siteMinderGuid);
+                
                 // 3/18/2020 - Note that LoadUser will now work if there is a match on the guid, as well as a match on name in a case where there is no guid.
                 userSettings.AuthenticatedUser = await _dynamicsClient.LoadUser(siteMinderGuid, context.Request.Headers, _ms_logger);
                 _logger.Information("After getting authenticated user = " + userSettings.GetJson());
